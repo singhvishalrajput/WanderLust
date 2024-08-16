@@ -10,11 +10,14 @@
         <div >
             <label for="title" class="form-label">Title</label>
             <input type="text" name="listing[title]" placeholder="Enter Title" class="form-control" required>
+            <div class="valid-feedback">Title looks good</div>
         </div>
             <br>
         <div>
             <label for="description" class="form-label">Description</label>
             <input type="textarea" name="listing[description]" placeholder="Enter Description" class="form-control" required>
+            <div class="invalid-feedback">Please enter a valid description.</div>
+
         </div>
             <br>
         <div>
@@ -27,12 +30,15 @@
             <div class="col-md-4">
                 <label for="price" class="form-label">Price</label>
                 <input type="number" name="listing[price]" placeholder="Enter Price" class="form-control" required>
+                <div class="invalid-feedback">Price should be valid</div>
             </div>
                 <br>
                 <br>
             <div class="col-md-8">
                 <label for="country" class="form-label">Country</label>
-            <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" required>
+                <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" required>
+                <div class="invalid-feedback">Country should be valid</div>
+
             </div>
         </div>
 
@@ -40,6 +46,8 @@
         <div>
             <label for="location" class="form-label">Location</label>
             <input type="text" name="listing[location]" placeholder="Enter location" class="form-control" required>
+            <div class="invalid-feedback">Location should be valid</div>
+            
         </div>
         
         <hr>
