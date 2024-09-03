@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-8 offset-2 mt-3">
         <br>
-        <h3 class="offset-4">Listing Details </h3>
+        <h3 class="offset-4"><%= listing.title %> </h3>
         <br>
         </div> 
             
@@ -14,7 +14,7 @@
             <div class="card-body">
                 <p class="card-text"> 
                     
-                    <b><%= listing.title %></b> <br>
+                    <!-- <b><%= listing.title %></b> <br> -->
                     <p><b>Description :</b> <%= listing.description %> </p> 
                     <p><b>Price :</b>       &#8377; <%= listing.price.toLocaleString("en-IN") %></p>
                     <p><b>Location :</b>    <%= listing.location %> </p> 
@@ -39,6 +39,26 @@
             
         </form>
     </div>
+
+    <div class="col-8 offset-3 mb-3">
+        <br><hr>
+        <h4>Leave a Review</h4>
+        <form action="/listing/<%= listing.id %>/reviews" method="POST">
+            <div class="mb-3 mt-3">
+                <label for="rating" class="form-label">rating</label>
+                <input type="range" min="1" max="5" id="rating" name="review[rating]" class="form-range">
+            </div>
+            <div class="mb-3 mt-3">
+                <label for="comment"  class="form-label">Comments</label>
+                <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control"></textarea>
+
+            </div>
+            
+            <button class="btn btn-outline-dark">Submit</button>
+
+        </form>
+    </div>
+
 </div>
 <br><br>
     
