@@ -75,7 +75,9 @@ app.get("/listing/:id", wrapAsync(async (req, res)=>{
     let {id} = req.params;
 
     const listing = await Listing.findById(id);
-    res.render("./listings/show.ejs", { listing })
+    const Allreviews  = await Review.find({});
+    
+    res.render("./listings/show.ejs", { listing, Allreviews })
 }))
 
 //Create Route

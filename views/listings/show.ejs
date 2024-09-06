@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-8 offset-2 mt-3">
         <br>
-        <h3 class="offset-4"><%= listing.title %> </h3>
+        <h3 class="offset-3"><%= listing.title %> </h3>
         <br>
         </div> 
             
@@ -40,7 +40,7 @@
         </form>
     </div>
 
-    <div class="col-8 offset-3 mb-3">
+    <div class="col-8 offset-2 mb-3">
         <br><hr>
         <h4>Leave a Review</h4>
         <form action="/listing/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
@@ -53,10 +53,54 @@
                 <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
                 <div class="invalid-feedback">Please add some comments for review</div>
             </div>
+            <div class="mb-3 mt-3">
+                <label for="name"  class="form-label">Name</label>
+                <input type="text" name="review[name]" id="name" class="form-control" required>
+                <div class="invalid-feedback">Write your name, Please. </div>
+            </div>
             
             <button class="btn btn-outline-dark">Submit</button>
 
         </form>
+        <hr><br><br><br>
+
+        <h4 style="text-align: center;">All Reviews</h4>
+        <br>
+        
+        <% if (listing.reviews.length === 0) { %>
+                <p>There are no reviews yet. </p>
+                <p>Be the first one to review</p>
+
+        <% } else { %>
+
+                <p>Total Reviews: <%= listing.reviews.length %></p>
+                <hr>
+                <br><br>
+                <% for(let review of Allreviews) { %>
+
+                    <% if (listing.reviews.includes(review._id)) { %>
+                        <div class="card">
+                            <div class="card-header">
+                                <p><%= review.name %></p>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><%= review.comment %></p>
+                                <p class="card-text">
+                                    Rating: 
+                                    <% for(let i = 0; i < review.rating; i++) { %>
+                                        <span>⭐</span>
+                                    <% } %></p>
+                                <p class="card-text">Reviewed on: <%= new Date(review.createdAt).toLocaleDateString() %></p>
+                            </div>
+                            
+                        </div>
+                        <hr>
+                    <% } %>
+
+                <% } %>
+
+
+        <% } %>
     </div>
 
 </div>
