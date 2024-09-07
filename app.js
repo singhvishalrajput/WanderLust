@@ -12,8 +12,8 @@ const {listingSchema, reviewSchema} = require("./schema.js")
 const Review  = require("./models/review.js")
 
 
-const listings =require("./routes/listing.js");
-
+const listings = require("./routes/listing.js");
+const reviews  = require("./routes/review.js")
 
 
 app.set("view engine", "ejs");
@@ -24,6 +24,7 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/Public")))
 
 app.use("/listing", listings);
+app.use("/listing/:id/reviews", reviews)
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/WanderLust";
 
@@ -41,57 +42,6 @@ async function main(){
 app.get("/", (req,res)=>{
     res.send("working.")
 })
-
-const validateListing = (req, res, next) => {
-    let { error }= listingSchema.validate(req.body);
-    if (error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
-        throw new ExpressError(400, error);
-    }else{
-        next();
-    }
-}
-
-const validateReview = (req, res, next) => {
-    let { error }= reviewSchema.validate(req.body);
-    if (error){
-        let errMsg = error.details.map((el)=> el.message).join(",");
-        throw new ExpressError(400, error);
-    }else{
-        next();
-    }
-}
-
-//Reviews
-//Post route
-app.post("/listing/:id/reviews", validateReview, wrapAsync(async(req, res)=>{
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review)
-
-    listing.reviews.push(newReview);
-
-    await newReview.save();
-    await listing.save();
-
-    console.log("new review saved");
-    res.redirect(`/listing/${listing._id}`);
-
-}));
-
-
-// app.get("/testListing", async (req, res)=>{
-//     let sampleListing = new  Listing({
-//         title: "My new Villa",
-//         description: "By the beach",
-//         price: 1200,
-//         location: "Calangate, Goa",
-//         country: "India"
-//     })
-
-//     await sampleListing.save();
-//     console.log("sample saved");
-//     res.send("successful Testing");
-// })
 
 app.all("*", (req, res, next)=>{
     next(new ExpressError(404, "Page Not Found!"));
