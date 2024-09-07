@@ -12,6 +12,9 @@ const {listingSchema, reviewSchema} = require("./schema.js")
 const Review  = require("./models/review.js")
 
 
+const listings =require("./routes/listing.js");
+
+
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -19,6 +22,8 @@ app.use(express.urlencoded({extended : true}));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/Public")))
+
+app.use("/listing", listings);
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/WanderLust";
 
@@ -56,60 +61,6 @@ const validateReview = (req, res, next) => {
         next();
     }
 }
-
-//Index Route.
-app.get("/listing", wrapAsync(async (req, res)=>{
-
-    const allListings = await Listing.find({});
-    res.render("./listings/index.ejs",{ allListings });
-
-}))
-
-//Create new route
-app.get("/listing/new", (req, res)=>{
-    res.render("./listings/new.ejs")
-})
-
-//show route
-app.get("/listing/:id", wrapAsync(async (req, res)=>{
-    let {id} = req.params;
-
-    const listing = await Listing.findById(id);
-    const Allreviews  = await Review.find({});
-    
-    res.render("./listings/show.ejs", { listing, Allreviews })
-}))
-
-//Create Route
-app.post("/listing", validateListing, wrapAsync(async (req, res, next)=>{
-        let newListing = new Listing(req.body.listing);
-        await newListing.save();
-        res.redirect("/listing")
-        
-}))
-
-//Edit route
-app.get("/listing/:id/edit", wrapAsync(async(req, res)=>{
-    let {id} = req.params;
-    const listing =  await Listing.findById(id);
-    res.render("./listings/edit.ejs", {listing})
-}))
-
-//Update
-app.put("/listing/:id", validateListing, wrapAsync(async(req, res)=>{
-
-    let {id} = req.params;
-    
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
-    res.redirect("/listing");
-}))
-
-//Delete Route
-app.delete("/listing/:id", wrapAsync(async (req, res)=>{
-    let {id} = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listing");
-}))
 
 //Reviews
 //Post route
