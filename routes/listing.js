@@ -8,7 +8,6 @@ const {listingSchema, reviewSchema} = require("../schema.js")
 
 
 
-
 //Validate listing
 const validateListing = (req, res, next) => {
     let { error }= listingSchema.validate(req.body);
@@ -47,7 +46,8 @@ router.get("/:id", wrapAsync(async (req, res)=>{
 router.post("/", validateListing, wrapAsync(async (req, res, next)=>{
         let newListing = new Listing(req.body.listing);
         await newListing.save();
-        res.redirect("/listing")
+        req.flash("success", "New Listing Created!");
+        res.redirect("/listing");
         
 }))
 
@@ -64,6 +64,7 @@ router.put("/:id", validateListing, wrapAsync(async(req, res)=>{
     let {id} = req.params;
     
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    req.flash("success", "Listing Updated!");
     res.redirect("/listing");
 }))
 
@@ -71,6 +72,7 @@ router.put("/:id", validateListing, wrapAsync(async(req, res)=>{
 router.delete("/:id", wrapAsync(async (req, res)=>{
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success", "Listing Deleted!");
     res.redirect("/listing");
 }))
 
