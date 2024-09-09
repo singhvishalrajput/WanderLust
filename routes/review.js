@@ -5,6 +5,7 @@ const ExpressError = require("../utils/ExpressError.js")
 const Listing  = require("../models/listing.js")
 const Review  = require("../models/review.js")
 const {listingSchema, reviewSchema} = require("../schema.js")
+const {isLoggedIn} = require("../middleware.js");
 
 
 
@@ -22,7 +23,7 @@ const validateReview = (req, res, next) => {
 
 //Reviews
 //Post route
-router.post("/", validateReview, wrapAsync(async(req, res)=>{
+router.post("/", isLoggedIn, validateReview, wrapAsync(async(req, res)=>{
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review)
 
