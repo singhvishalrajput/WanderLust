@@ -1,5 +1,5 @@
 module.exports.isLoggedIn = (req, res, next)=>{
-    // console.log(req.path, "....", req.originalUrl);
+    
     console.log(req.user);
     if(!req.isAuthenticated()){
         req.session.redirectUrl = req.originalUrl;
@@ -12,7 +12,7 @@ module.exports.isLoggedIn = (req, res, next)=>{
 
 module.exports.saveRedirectUrl = (req, res, next)=>{
     if(req.session.redirectUrl){
-        req.loccals.redirectUrl = req.session.redirectUrl;
+        req.locals.redirectUrl = req.session.redirectUrl;
     }
     next();
 }
