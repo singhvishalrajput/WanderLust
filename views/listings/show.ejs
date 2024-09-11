@@ -28,7 +28,7 @@
         
         
     
-    
+    <% if (currUser &&  listing.owner._id.equals(currUser._id)) { %>
     <div class="btns">
         <a href="/listing/<%= listing.id %>/edit" class="btn btn-dark col-md-1 offset-2 edit-btn">&nbsp;Edit&nbsp;</a>
     <br>
@@ -39,9 +39,11 @@
             
         </form>
     </div>
+    <% } %>
 
     <div class="col-8 offset-2 mb-3">
         <br><hr>
+        <% if (currUser)  { %>
         <h4>Leave a Review</h4>
         <form action="/listing/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
             <div class="mb-3 mt-3">
@@ -53,15 +55,12 @@
                 <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
                 <div class="invalid-feedback">Please add some comments for review</div>
             </div>
-            <div class="mb-3 mt-3">
-                <label for="name"  class="form-label">Name</label>
-                <input type="text" name="review[name]" id="name" class="form-control" required>
-                <div class="invalid-feedback">Write your name, Please. </div>
-            </div>
+            
             
             <button class="btn btn-outline-dark">Submit</button>
 
         </form>
+        <% } %>
         <hr><br><br><br>
 
         <h4 style="text-align: center;">All Reviews</h4>
@@ -76,12 +75,12 @@
                 <p>Total Reviews: <%= listing.reviews.length %></p>
                 <hr>
                 <br><br>
-                <% for(let review of Allreviews) { %>
+                <% for(let review of listing.reviews) { %>
 
-                    <% if (listing.reviews.includes(review._id)) { %>
+                    
                         <div class="card">
                             <div class="card-header">
-                                <p><%= review.name %></p>
+                                <p><%= review.author.username %></p>
                             </div>
                             <div class="card-body">
                                 <p class="card-text"><%= review.comment %></p>
@@ -95,7 +94,7 @@
                             
                         </div>
                         <hr>
-                    <% } %>
+                    
 
                 <% } %>
 
