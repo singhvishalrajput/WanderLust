@@ -5,15 +5,11 @@ const Listing  = require("../models/listing.js")
 const Review  = require("../models/review.js")
 const {isLoggedIn, isOwner, validateListing} = require("../middleware.js")
 
+const listingController = require("../controllers/listings.js");
 
 
 //Index Route.
-router.get("/", wrapAsync(async (req, res)=>{
-
-    const allListings = await Listing.find({});
-    res.render("./listings/index.ejs",{ allListings });
-
-}))
+router.get("/", wrapAsync(index))
 
 //Create new route
 router.get("/new", isLoggedIn, (req, res)=>{
