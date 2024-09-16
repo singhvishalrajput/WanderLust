@@ -6,12 +6,19 @@ const Review  = require("../models/review.js")
 const {isLoggedIn, isOwner, validateListing} = require("../middleware.js")
 
 const listingController = require("../controllers/listings.js");
+const multer = require('multer');
+const upload = multer({ dest : 'uploads/'}) // It will create a folder automatically.
+
 
 //Index route and Create route
 router
     .route("/")
     .get( wrapAsync(listingController.index))
-    .post( validateListing, wrapAsync(listingController.createListing))
+    // .post( validateListing, wrapAsync(listingController.createListing))
+    .post( upload.single('listing[image.url]'), (req, res)=>{
+        res.send(req.file);
+    })
+
 
 
 //Create new route
